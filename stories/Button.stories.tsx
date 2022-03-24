@@ -1,5 +1,8 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { screen, within, userEvent } from '@storybook/testing-library';
+import { expect } from '@storybook/jest';
+
 
 import { Button } from './Button';
 
@@ -38,4 +41,16 @@ export const Small = Template.bind({});
 Small.args = {
   size: 'small',
   label: 'Button',
+};
+
+export const ClickedButton = Template.bind({});
+ClickedButton.args = {
+  primary: true,
+  label: 'Click me',
+};
+ClickedButton.play = async ({canvasElement}) => {
+  const canvas = within(canvasElement);
+
+  await userEvent.click(canvas.getByRole('button'))
+  await expect(canvas.getByRole('button')).toBeDisabled()
 };
